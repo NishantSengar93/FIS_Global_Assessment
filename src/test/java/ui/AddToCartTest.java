@@ -1,4 +1,4 @@
-package tests;
+package ui;
 
 
 import com.aventstack.extentreports.ExtentReports;
@@ -7,20 +7,19 @@ import com.aventstack.extentreports.Status;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.HomePage;
 import pages.SearchResultsPage;
 import pages.CartPage;
 import utils.DriverManager;
 import utils.ExtentManager;
 import utils.LoggingUtil;
+import utils.TestListener;
+
 import java.util.ArrayList;
 
 
-@Listeners(tests.TestListener.class)
+@Listeners(TestListener.class)
 public class AddToCartTest {
     private WebDriver driver;
     private HomePage homePage;
@@ -30,9 +29,9 @@ public class AddToCartTest {
     private ExtentTest test;
     private Logger logger;
 
-
+    @Parameters("browser")
     @BeforeTest
-    public void setup() {
+    public void setup(String browser) {
         // Initialize ExtentReports and Logger
         extent = ExtentManager.getUIInstance();
         test = extent.createTest("UI Test Report");
@@ -40,13 +39,15 @@ public class AddToCartTest {
 
 
         // Initialize WebDriver using DriverManager (chrome, firefox, edge, safari)
-        driver = DriverManager.getDriver("chrome");
+        driver = DriverManager.getDriver(browser);
         driver.get("https://www.ebay.com");
 
         // Initialize page objects
         homePage = new HomePage(driver);
         resultsPage = new SearchResultsPage(driver);
         cartPage = new CartPage(driver);
+
+        test.log(Status.INFO, "Browser started: " + browser);
     }
 
     @Test(description = "Verify book added to cart")
@@ -68,7 +69,7 @@ public class AddToCartTest {
             // Step 4: Verify cart count
             String cartCount = cartPage.getCartCount();
             LoggingUtil.logWithScreenshot(driver, test, logger, "Cart updated successfully with count: " + cartCount);
-            Assert.assertEquals("1", cartCount);
+            Assert.assertEquals(cartCount,"1" );
             test.pass("Cart updated successfully with item count: " + cartCount);
 
         } catch (Exception e) {

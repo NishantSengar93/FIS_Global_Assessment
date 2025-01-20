@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Combined Tests" parallel="false">
+    <parameter name="browser" value="chrome" />
+    <test name="UI Automation">
+        <classes>
+            <class name="ui.AddToCartTest"/>
+        </classes>
+    </test>
+    <test name="API Automation">
+        <classes>
+            <class name="api.CoinDeskAPITest"/>
+        </classes>
+    </test>
+</suite>

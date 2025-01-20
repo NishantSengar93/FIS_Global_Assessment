@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="EbayUIAutomationSuite" parallel="false">
+    <parameter name="browser" value="chrome" />
     <test name="EbayAddToCartTest">
         <classes>
-            <class name="tests.AddToCartTest"/>
-            <class name="tests.CoinDeskAPITest"/>
+            <class name="ui.AddToCartTest"/>
         </classes>
     </test>
 </suite>
